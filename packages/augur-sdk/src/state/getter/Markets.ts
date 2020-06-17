@@ -54,6 +54,7 @@ export enum GetMarketsSortBy {
   lastTradedTimestamp = 'lastTradedTimestamp',
   disputeRound = 'disputeRound',
   totalRepStakedInMarket = 'totalRepStakedInMarket',
+  feesGenerated = 'feesGenerated',
 }
 
 const MaxLiquiditySpreadValue = {
@@ -744,6 +745,18 @@ export class Markets {
       marketCount: marketData.length,
     };
 
+    const orderFilledLogsByMarket = await getOrderFilledLogsByMarket(db, marketData);
+    marketData = marketData.map(market => {
+      const m = orderFilledLogsByMarket[market.market];
+      const numberOfTrades = m?.length || 0;
+      const feesGenerated = (new BigNumber(Number(market.feePercent))).times(numberOfTrades);
+
+      return {
+        ...market,
+        feesGenerated: feesGenerated.toNumber(),
+      }
+    });
+
     if (params.sortBy) {
       const sortBy = params.sortBy;
       marketData = _.orderBy(
@@ -1278,6 +1291,21 @@ function getPeriodStartTime(
     (secondsSinceGlobalStart % period) +
     globalStarttime
   );
+}
+
+async function getOrderFilledLogsByMarket(
+  db: DB,
+  markets: MarketData[],
+): Promise<{}> {
+  const marketIds = _.map(markets, 'market');
+  const orderFilledLogs = await db.ParsedOrderEvent.where('market')
+    .anyOfIgnoreCase(marketIds)
+    .and(item => {
+      return item.eventType === OrderEventType.Fill;
+    })
+    .toArray();
+
+  return _.groupBy(orderFilledLogs, 'market');
 }
 
 async function getMarketsInfo(
