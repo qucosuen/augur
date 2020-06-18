@@ -54,7 +54,7 @@ export enum GetMarketsSortBy {
   lastTradedTimestamp = 'lastTradedTimestamp',
   disputeRound = 'disputeRound',
   totalRepStakedInMarket = 'totalRepStakedInMarket',
-  feesGenerated = 'feesGenerated',
+  numberOfTrades = 'numberOfTrades',
 }
 
 const MaxLiquiditySpreadValue = {
@@ -744,18 +744,6 @@ export class Markets {
       filteredOutCount,
       marketCount: marketData.length,
     };
-
-    const orderFilledLogsByMarket = await getOrderFilledLogsByMarket(db, marketData);
-    marketData = marketData.map(market => {
-      const m = orderFilledLogsByMarket[market.market];
-      const numberOfTrades = m?.length || 0;
-      const feesGenerated = (new BigNumber(Number(market.feePercent))).times(numberOfTrades);
-
-      return {
-        ...market,
-        feesGenerated: feesGenerated.toNumber(),
-      }
-    });
 
     if (params.sortBy) {
       const sortBy = params.sortBy;
