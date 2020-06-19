@@ -1,5 +1,4 @@
 import * as Comlink from 'comlink';
-
 import './MeshTransferHandler';
 import 'localstorage-polyfill';
 import { retry } from 'async';
