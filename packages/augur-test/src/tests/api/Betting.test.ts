@@ -1,15 +1,13 @@
 import { WSClient } from '@0x/mesh-rpc-client';
+import { sleep } from '@augurproject/core/build/libraries/HelperFunctions';
 import {
   AMERICAN_FOOTBALL,
   groupTypes,
   NFL,
+  SECONDS_IN_A_DAY,
   SPORTS,
 } from '@augurproject/sdk-lite';
-import {
-  TEMPLATES,
-} from '@augurproject/templates';
-import { sleep } from '@augurproject/core/build/libraries/HelperFunctions';
-import { SECONDS_IN_A_DAY } from '@augurproject/sdk';
+import { TEMPLATES } from '@augurproject/templates';
 import {
   ACCOUNTS,
   defaultSeedPath,
