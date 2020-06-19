@@ -27,6 +27,7 @@ const mapStateToProps = (state: AppState) => {
   const market = selectMarket(state.modal.marketId);
   let availableDai = totalTradingBalance(state.loginAccount);
   const gasPrice = state.gasPriceInfo.userDefinedGasPrice || state.gasPriceInfo.average;
+
   return {
     modal: state.modal,
     market,
@@ -35,7 +36,7 @@ const mapStateToProps = (state: AppState) => {
     loginAccount: state.loginAccount,
     chunkOrders: !state.appStatus.zeroXEnabled,
     GsnEnabled: state.appStatus.gsnEnabled,
-    availableDai
+    availableDai,
   };
 };
 
@@ -94,6 +95,7 @@ const mergeProps = (sP, dP, oP) => {
     }
     dP.closeModal();
   }
+
   return {
     title: 'Unsigned Orders',
     description: [
@@ -136,7 +138,7 @@ const mergeProps = (sP, dP, oP) => {
       {
         disabled: insufficientFunds,
         text: 'Submit All',
-        action: () => dP.startOrderSending({ marketId, chunkOrders }),
+        action: async () => await dP.startOrderSending({marketId, chunkOrders}),
       },
       // Temporarily removed because there is no confirmation, the button just cancels everything on a single click
       // {
