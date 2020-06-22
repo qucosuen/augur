@@ -2,25 +2,36 @@ pipeline {
 	agent any
 	dir('packages/augur-core')
 	{
-		stages {
-			stage('Build') {
-				steps {
+
+	}
+	stages {
+		stage('Dependency Installation') {
+			steps {
+				sh 'python3 -m venv .augur-env'
+				sh 'source .augur-env/bin/activate'
+				dir('packages/augur-core') {
+					sh 'yarn'
+					sh 'pip install -r requirements.txt'
+				}
+			}
+		}
+		stage('Build') {
+			steps {
+				sh 'pwd'
+				dir('packages/augur-core') {
 					sh 'pwd'
 				}
+				sh 'pwd'
 			}
-			stage('Dependency Installation') {
-				steps {
-				}
+		}
+		stage('Test') {
+			steps {
+				echo 'Testing ..'
 			}
-			stage('Test') {
-				steps {
-					echo 'Testing ..'
-				}
-			}
-			stage('Deploy') {
-				steps {
-					echo 'Deploying ..'
-				}
+		}
+		stage('Deploy') {
+			steps {
+				echo 'Deploying ..'
 			}
 		}
 	}
