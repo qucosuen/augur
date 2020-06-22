@@ -4,7 +4,11 @@ pipeline {
 	stages {
 		stage('Build') {
 			steps {
-				echo 'Building ..'
+				sh "$PWD"
+				dir('packages/augur-core') {
+					sh "$PWD"
+				}
+				sh "$PWD"
 			}
 		}
 		stage('Test') {
