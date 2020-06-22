@@ -1,24 +1,26 @@
 pipeline {
 	agent any
-
-	stages {
-		stage('Build') {
-			steps {
-				sh 'pwd'
-				dir('packages/augur-core') {
+	dir('packages/augur-core')
+	{
+		stages {
+			stage('Build') {
+				steps {
 					sh 'pwd'
 				}
-				sh 'pwd'
 			}
-		}
-		stage('Test') {
-			steps {
-				echo 'Testing ..'
+			stage('Dependency Installation') {
+				steps {
+				}
 			}
-		}
-		stage('Deploy') {
-			steps {
-				echo 'Deploying ..'
+			stage('Test') {
+				steps {
+					echo 'Testing ..'
+				}
+			}
+			stage('Deploy') {
+				steps {
+					echo 'Deploying ..'
+				}
 			}
 		}
 	}
