@@ -17,11 +17,7 @@ pipeline {
 		}
 		stage('Build') {
 			steps {
-				sh 'pwd'
-				dir('packages/augur-core') {
-					sh 'pwd'
-				}
-				sh 'pwd'
+				echo 'Building ..'
 			}
 		}
 		stage('Test') {
