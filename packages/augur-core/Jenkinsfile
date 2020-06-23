@@ -3,6 +3,7 @@ pipeline {
 	stages {
 		stage('Dependency Installation') {
 			steps {
+				sh 'source .augur-env/bin/activate'
 				dir('packages/augur-core') {
 					sh 'yarn'
 					sh 'pip install -r requirements.txt'
